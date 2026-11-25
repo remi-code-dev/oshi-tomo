@@ -75,7 +75,16 @@ oshi-tomo の画面・操作と、URL・HTTP メソッドの一覧です。Week 
 
 ### 公式情報（F-12）・お問い合わせ（F-13）
 
-管理者画面なしで作れる形を Week 21 で検討し、ルートを追加する。
+管理者画面は作らない（Won't）ため、公式情報の登録は Seeder、お問い合わせの確認は tinker で行う。アプリには、見る画面・送る画面だけを作る。
+
+| 画面・操作 | メソッド | URL | ルート名 | コントローラー@アクション | ログイン | 権限（Policy） | 優先度 |
+|-----------|---------|-----|---------|--------------------------|---------|---------------|--------|
+| 公式情報の一覧 | GET | /official-infos | official-infos.index | OfficialInfoController@index | 不要 | - | Could |
+| お問い合わせフォーム | GET | /contacts/create | contacts.create | ContactController@create | 必要 | - | Could |
+| お問い合わせの送信 | POST | /contacts | contacts.store | ContactController@store | 必要（`throttle:3,1`：1分に3回まで） | - | Could |
+
+- 公式情報は一覧だけ作る。各情報から公式サイトへリンクする（詳細ページは作らない）
+- お問い合わせを送ったら、フォームへリダイレクトして「送信しました」と表示する
 
 ## 補足
 
@@ -178,8 +187,8 @@ require __DIR__.'/auth.php';
 | F-09 推しの登録 | US-13 | profile.edit, profile.update |
 | F-10 投稿 | US-16, US-17 | posts.*（7つ） |
 | F-11 通報 | US-12 | users.reports.create / store |
-| F-12 公式情報 | US-14 | Week 21 で検討 |
-| F-13 お問い合わせ | US-15 | Week 21 で検討 |
+| F-12 公式情報 | US-14 | official-infos.index |
+| F-13 お問い合わせ | US-15 | contacts.create / store |
 | F-14 年齢の範囲表示 | US-19 | users.show（ログイン時だけ表示） |
 | F-15 フォロー | US-20, US-21 | users.follow（Ajax）, users.show |
 

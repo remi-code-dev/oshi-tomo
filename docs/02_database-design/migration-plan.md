@@ -26,6 +26,8 @@
 | 8 | create_posts_table | posts | users, categories | Should | Week 23 |
 | 9 | create_follows_table | follows | users | Could | Week 24（余裕があれば） |
 | 10 | create_reports_table | reports | users | Could | Week 24（余裕があれば） |
+| 11 | create_official_infos_table | official_infos | works | Could | Week 24（余裕があれば） |
+| 12 | create_contacts_table | contacts | users | Could | Week 24（余裕があれば） |
 
 ※ 0 は Laravel・Breeze が最初から用意するマイグレーション。cache・jobs などのテーブルも一緒に作られる
 
@@ -151,6 +153,33 @@ Schema::create('reports', function (Blueprint $table) {
 });
 ```
 
+### 11. create_official_infos_table
+
+```php
+Schema::create('official_infos', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('work_id')->constrained()->restrictOnDelete();
+    $table->string('title', 100);
+    $table->string('url');
+    $table->date('start_date');
+    $table->date('end_date')->index();
+    $table->timestamps();
+});
+```
+
+### 12. create_contacts_table
+
+```php
+Schema::create('contacts', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+    $table->string('work_name', 100);
+    $table->text('body')->nullable();
+    $table->string('status', 20)->default('未対応')->index();
+    $table->timestamps();
+});
+```
+
 ## Seeder の計画
 
 | Seeder | 内容 | 本番でも実行するか |
@@ -158,6 +187,7 @@ Schema::create('reports', function (Blueprint $table) {
 | CategorySeeder | カテゴリ5件（コラボカフェ／写真撮影／ライブ・イベント／グッズ／その他） | する |
 | PrefectureSeeder | 47都道府県（id は JIS コード） | する |
 | WorkSeeder | 作品の初期データ（人気作品を20件程度。作品名は Week 21 で決める） | する |
+| OfficialInfoSeeder | 公式情報（F-12）。管理者画面の代わりに、運営者が情報を書き足して実行する | する |
 | UserSeeder など | 動作確認用のテストユーザー・募集・投稿（Factory を使う） | しない（開発環境だけ） |
 
 - マスタの Seeder は `updateOrCreate` で書き、何回実行しても重複しないようにする
@@ -167,4 +197,4 @@ Schema::create('reports', function (Blueprint $table) {
 
 - 外部キーの順番を間違えると `migrate` が失敗するため、ファイル名の日時（マイグレーションの実行順）が上の表の順番になるように作る
 - 本番にデプロイした後は、作成済みのマイグレーションを書き換えない。変更は新しいマイグレーションを追加して行う
-- Could のテーブル（follows・reports）は、作らないことになった場合はマイグレーションも作らない
+- Could のテーブル（follows・reports・official_infos・contacts）は、作らないことになった場合はマイグレーションも作らない

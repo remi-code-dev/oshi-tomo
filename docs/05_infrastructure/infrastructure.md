@@ -5,7 +5,7 @@
 **A：AWS を使い続ける**
 
 Week 11〜17 でブログアプリ（rabblog.com）用に作った EC2 + Docker + GitHub Actions の構成を、oshi-tomo でも使う。
-デプロイ先は Week 21 の技術選定で確定する。
+Week 21 の技術選定で A に確定した（[06_tech-stack.md](../06_tech-stack.md)）。
 
 | 理由 | 内容 |
 |------|------|
@@ -52,7 +52,7 @@ graph TB
      |
      | HTTPS (443)
      ↓
-【ドメイン（Week 13 で取得した rabblog.com のサブドメイン。例：oshi-tomo.rabblog.com）】
+【ドメイン（Week 13 で取得した rabblog.com のサブドメイン：oshi-tomo.rabblog.com）】
      |
      ↓
 【EC2 インスタンス（Ubuntu Server LTS）】
@@ -77,7 +77,7 @@ graph TB
 | 要素 | 使うもの | 内容 |
 |------|---------|------|
 | クライアント | ブラウザ、スマートフォン | スマートフォンからの利用が中心 |
-| ドメイン | Week 13 で取得したドメインのサブドメイン | 例：oshi-tomo.rabblog.com。Week 21 で確定 |
+| ドメイン | Week 13 で取得したドメインのサブドメイン | oshi-tomo.rabblog.com（Week 21 で確定） |
 | Web サーバー | EC2 の Nginx | HTTPS の終端（Let's Encrypt）。ドメインごとにブログアプリと oshi-tomo へ振り分ける |
 | アプリサーバー | EC2 上の Docker（nginx + app コンテナ） | Laravel / PHP 8.2。ブログアプリとはポート（8000 / 8001）とディレクトリを分ける |
 | データベース | RDS（MySQL 8.4） | ブログアプリと同じ RDS インスタンスに、別のデータベースとユーザーを作る |

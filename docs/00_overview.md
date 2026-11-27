@@ -30,6 +30,7 @@
 | 04 | 見積もり | [04_estimation/workload.md](04_estimation/workload.md) | 機能別の工数（ストーリーポイント法） |
 | | | [04_estimation/schedule.md](04_estimation/schedule.md) | 全体と日別のスケジュール |
 | 05 | インフラ構成図 | [05_infrastructure/infrastructure.md](05_infrastructure/infrastructure.md) | 本番（AWS）と開発（Docker）の構成図 |
+| 06 | 技術選定 | [06_tech-stack.md](06_tech-stack.md) | 使用技術の一覧と選定理由、デプロイ先（A：AWS）の選定理由 |
 | - | 練習課題 | [practice/](practice/) | Week 18・19 の練習課題 |
 
 ## 設計で決めた主なこと

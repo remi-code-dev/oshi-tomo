@@ -1,9 +1,9 @@
-# oshi-tomo 設計書（初版）
+# oshi-tomo 設計書（確定版）
 
 推し活おでかけ仲間募集アプリ「oshi-tomo」の設計書です。
 [要件定義書](requirements.md) で決めた「何を作るか」を、「どう作るか」に落とし込んだものです。
 
-- 版：初版（Week 19）。Week 21 で見直して確定する
+- 版：確定版（Week 21）。初版は Week 19
 - 作成者：remi-code-dev
 
 ## システムの概要
@@ -21,7 +21,7 @@
 
 | No | 設計書 | ファイル | 内容 |
 |----|--------|---------|------|
-| - | 要件定義書 | [requirements.md](requirements.md) | 何を作るか（Week 18、設計に合わせて 1.2 に改訂） |
+| - | 要件定義書 | [requirements.md](requirements.md) | 何を作るか（Week 18。Week 21 で確定版 2.0） |
 | 01 | 画面設計 | [01_screen-design/figma.md](01_screen-design/figma.md) | Figma のワイヤーフレーム（6画面）、画面遷移図 [screen-transition.png](01_screen-design/screen-transition.png) |
 | 02 | DB設計 | [02_database-design/table-definitions.md](02_database-design/table-definitions.md) | テーブル定義（12テーブル） |
 | | | [02_database-design/er-diagram.md](02_database-design/er-diagram.md) | ER図（Mermaid）。画像版 [er-diagram.png](02_database-design/er-diagram.png) |

@@ -22,7 +22,7 @@
 | No | 設計書 | ファイル | 内容 |
 |----|--------|---------|------|
 | - | 要件定義書 | [requirements.md](requirements.md) | 何を作るか（Week 18、設計に合わせて 1.2 に改訂） |
-| 01 | 画面設計 | [01_screen-design/figma.md](01_screen-design/figma.md) | Figma のワイヤーフレーム（5画面）、画面遷移図 [screen-transition.png](01_screen-design/screen-transition.png) |
+| 01 | 画面設計 | [01_screen-design/figma.md](01_screen-design/figma.md) | Figma のワイヤーフレーム（6画面）、画面遷移図 [screen-transition.png](01_screen-design/screen-transition.png) |
 | 02 | DB設計 | [02_database-design/table-definitions.md](02_database-design/table-definitions.md) | テーブル定義（12テーブル） |
 | | | [02_database-design/er-diagram.md](02_database-design/er-diagram.md) | ER図（Mermaid）。画像版 [er-diagram.png](02_database-design/er-diagram.png) |
 | | | [02_database-design/migration-plan.md](02_database-design/migration-plan.md) | マイグレーションを作る順番と内容、Seeder |
@@ -50,4 +50,4 @@
 
 - 実装期間は 2026/12/1〜12/9（最初の提出）。11/28〜11/30 に前倒しで環境構築を行う
 - 本番環境へのデプロイは、最初の提出の後に行う
-- 会員登録・投稿・通報の画面は、Week 21 の見直しで Figma に追加するかを決める
+- Figma には MVP の画面（01〜03・06）と、プロフィール（04・05）を描いた。投稿・通報・公式情報・お問い合わせの画面は、募集の画面と同じレイアウトで作るため描いていない

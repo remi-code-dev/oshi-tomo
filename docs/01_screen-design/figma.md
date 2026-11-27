@@ -6,8 +6,8 @@ https://www.figma.com/design/Tku4M3QKBPlf8cIJ8SJPN7/oshi-tomo-%E7%94%BB%E9%9D%A2
 
 | ページ | 内容 |
 |--------|------|
-| 画面設計 | 主要画面のワイヤーフレーム（5画面） |
-| 画面遷移図 | 5画面を矢印でつないだ図。画像版は [screen-transition.png](screen-transition.png) |
+| 画面設計 | 主要画面のワイヤーフレーム（6画面） |
+| 画面遷移図 | 6画面を矢印でつないだ図。画像版は [screen-transition.png](screen-transition.png) |
 
 ## 設計の方針
 
@@ -19,13 +19,17 @@ https://www.figma.com/design/Tku4M3QKBPlf8cIJ8SJPN7/oshi-tomo-%E7%94%BB%E9%9D%A2
 
 ## 画面一覧
 
-| No | 画面 | ルート（[routing.md](../03_routing-design/routing.md)） | 主な機能 | 優先度 |
-|----|------|------------------------------------------------------|---------|--------|
-| 01 | 募集一覧（トップ） | GET /recruitments（recruitments.index） | F-03, F-05 | Must |
-| 02 | 募集詳細 | GET /recruitments/{recruitment}（recruitments.show） | F-03, F-07, F-08 | Must |
-| 03 | 募集作成 | GET /recruitments/create（recruitments.create）。編集（recruitments.edit）も同じレイアウト | F-03, F-06 | Must |
-| 04 | プロフィール | GET /users/{user}（users.show） | F-02, F-14, F-15 | Must |
-| 05 | プロフィール編集 | GET /profile（profile.edit） | F-02, F-09 | Must |
+| No | 画面 | ルート（[routing.md](../03_routing-design/routing.md)） | 主な機能 | 優先度 | MVP |
+|----|------|------------------------------------------------------|---------|--------|-----|
+| 01 | 募集一覧（トップ） | GET /recruitments（recruitments.index） | F-03, F-05 | Must | ✅（検索はキーワードのみ） |
+| 02 | 募集詳細 | GET /recruitments/{recruitment}（recruitments.show） | F-03, F-07, F-08 | Must | ✅ |
+| 03 | 募集作成 | GET /recruitments/create（recruitments.create）。編集（recruitments.edit）も同じレイアウト | F-03, F-06 | Must | ✅ |
+| 04 | プロフィール | GET /users/{user}（users.show） | F-02, F-14, F-15 | Must | |
+| 05 | プロフィール編集 | GET /profile（profile.edit） | F-02, F-09 | Must | |
+| 06 | 会員登録 | GET /register（register） | F-01 | Must | ✅ |
+
+- 06 は Week 21 で追加した。Breeze の会員登録画面に「生年月日」の欄を足すため、そのままの画面ではなくなるから
+- 01 のカテゴリ・エリアの絞り込みは MVP の後に作る。MVP では検索欄（キーワード）だけ動くようにする
 
 ### 各画面で表している状態
 
@@ -36,6 +40,7 @@ https://www.figma.com/design/Tku4M3QKBPlf8cIJ8SJPN7/oshi-tomo-%E7%94%BB%E9%9D%A2
 | 03 | 募集作成 | ログインしている人が、新しく募集を作る |
 | 04 | プロフィール | ログインしている人が、他の人のプロフィールを見ている（年齢の範囲・フォローボタンを表示） |
 | 05 | プロフィール編集 | ログインしている人が、自分のプロフィールを編集する |
+| 06 | 会員登録 | ログインしていない人が、18歳未満の生年月日を入力して「登録する」を押した（エラーを表示） |
 
 ## 画面遷移
 
@@ -51,6 +56,8 @@ https://www.figma.com/design/Tku4M3QKBPlf8cIJ8SJPN7/oshi-tomo-%E7%94%BB%E9%9D%A2
 | 6 | 04 プロフィール | 募集カード | 02 募集詳細 |
 | 7 | 04 プロフィール | マイページ（自分のプロフィールのとき「編集する」） | 05 プロフィール編集 |
 | 8 | 05 プロフィール編集 | 保存する | 04 プロフィール |
+| 9 | 01 募集一覧 | ヘッダーの「ログイン」→ ログイン画面の「新規登録」 | 06 会員登録（ログイン画面は Breeze のものを使うため描いていない） |
+| 10 | 06 会員登録 | 登録する | 01 募集一覧（Breeze の `/dashboard` ではなく募集一覧へ） |
 
 図に書いていないルール
 - どの画面からも、ヘッダーの「oshi-tomo」で 01 募集一覧へ、「マイページ」で自分のプロフィールへ移動できる
@@ -80,10 +87,12 @@ https://www.figma.com/design/Tku4M3QKBPlf8cIJ8SJPN7/oshi-tomo-%E7%94%BB%E9%9D%A2
 | エラー表示を設計したか | 入力エラーは、各入力欄のすぐ下に赤字で表示する（Breeze の表示と同じ形）。18歳未満の登録エラーも同じ |
 | ローディング状態を考慮したか | 「行きたい！」・フォロー（Ajax）は、通信中はボタンを押せないようにして二重送信を防ぐ |
 
-## 今回作っていない画面（Week 21 で追加を検討）
+## 今回作っていない画面（Week 21 で確定）
 
 | 画面 | 理由 |
 |------|------|
-| 会員登録・ログイン | Breeze の画面を使う。会員登録には生年月日の入力欄を追加する |
+| ログイン・パスワード再設定 | Breeze の画面をそのまま使う（会員登録は 06 として追加した） |
+| エラーページ（404 など） | Laravel の標準のエラーページを使う |
+| 公式情報の一覧・お問い合わせ | Could のため。お問い合わせは 03 と同じフォームのレイアウトで作る |
 | 投稿一覧・投稿詳細・投稿作成 | Should のため。募集の画面（01〜03）と同じレイアウトで作る |
 | 通報フォーム | Could のため |

@@ -21,8 +21,10 @@ oshi-tomo（推し活おでかけ仲間募集アプリ）のテーブル定義�
 | 8 | posts | 投稿 | メイン | F-10 | Should |
 | 9 | follows | フォロー | 中間（users × users） | F-15 | Could |
 | 10 | reports | 通報 | メイン | F-11 | Could |
+| 11 | official_infos | 公式情報 | マスタ（Seeder） | F-12 | Could |
+| 12 | contacts | お問い合わせ | メイン | F-13 | Could |
 
-※ 公式情報（F-12）・お問い合わせ（F-13）のテーブルは、管理者画面なしで作れる形を Week 21 で検討する
+※ 管理者画面は作らない（Won't）ため、公式情報は運営者が Seeder で登録し、お問い合わせは運営者が DB を直接確認する（Week 21 で決定）
 
 ### ON DELETE の方針
 
@@ -95,7 +97,7 @@ oshi-tomo（推し活おでかけ仲間募集アプリ）のテーブル定義�
 
 【備考】
 - 推しは作品単位で登録する（表記ゆれを防ぐため、自由入力にしない）
-- 初期データは Seeder で登録する。載っていない作品は、ユーザーがお問い合わせで追加を依頼する（US-15）
+- 初期データは Seeder で登録する。載っていない作品の人は「その他」を選び、お問い合わせで追加を依頼する（US-15）
 
 ---
 
@@ -285,3 +287,60 @@ oshi-tomo（推し活おでかけ仲間募集アプリ）のテーブル定義�
 - 退会して同じメールアドレスで再登録しても、過去の通報が分かるように、通報の記録は退会後も残す
 - 退会後も通報の記録（メールアドレスを含む）を残すことを、利用規約・プライバシーポリシーに書く
 - 管理者画面は作らない（Won't）ため、通報は開発者が DB を直接確認する
+
+---
+
+## 11. official_infos（公式情報）
+
+| カラム名 | 型 | NULL | デフォルト | 説明 |
+|----------|-----|------|-----------|------|
+| id | BIGINT UNSIGNED | NO | AUTO | ID（PK） |
+| work_id | BIGINT UNSIGNED | NO | - | どの作品の情報か（FK → works） |
+| title | VARCHAR(100) | NO | - | 情報のタイトル（例：「〇〇 コラボカフェ 渋谷」） |
+| url | VARCHAR(255) | NO | - | 公式サイトの URL |
+| start_date | DATE | NO | - | 開催の開始日 |
+| end_date | DATE | NO | - | 開催の終了日 |
+| created_at | TIMESTAMP | YES | NULL | 作成日時 |
+| updated_at | TIMESTAMP | YES | NULL | 更新日時 |
+
+【インデックス】
+- PRIMARY KEY (id)
+- INDEX (end_date)：終わった情報を除いて一覧を出すため
+
+【外部キー】
+- work_id REFERENCES works(id) ON DELETE RESTRICT
+
+【備考】
+- 管理者画面は作らない（Won't）ため、運営者が OfficialInfoSeeder にデータを書き、`php artisan db:seed --class=OfficialInfoSeeder` で登録する
+- 一覧には、終了日が今日以降の情報だけを、開始日が近い順に表示する
+- 情報の詳細は公式サイトで見てもらう（アプリには詳細ページを作らない）
+
+---
+
+## 12. contacts（お問い合わせ）
+
+| カラム名 | 型 | NULL | デフォルト | 説明 |
+|----------|-----|------|-----------|------|
+| id | BIGINT UNSIGNED | NO | AUTO | ID（PK） |
+| user_id | BIGINT UNSIGNED | NO | - | 送った人（FK → users） |
+| work_name | VARCHAR(100) | NO | - | 載せてほしい作品名 |
+| body | TEXT | YES | NULL | 内容（任意、1000文字以内） |
+| status | VARCHAR(20) | NO | '未対応' | 対応状況（未対応／対応済み） |
+| created_at | TIMESTAMP | YES | NULL | 送った日時 |
+| updated_at | TIMESTAMP | YES | NULL | 更新日時 |
+
+【インデックス】
+- PRIMARY KEY (id)
+- INDEX (status)：未対応のお問い合わせを探すため
+
+【外部キー】
+- user_id REFERENCES users(id) ON DELETE CASCADE
+
+【制約（バリデーション）】
+- work_name：必須、100文字以内
+- body：1000文字以内
+- 連続送信を防ぐため、送信のルートに throttle（1分に3回まで）を付ける
+
+【備考】
+- 管理者画面は作らない（Won't）ため、運営者は `php artisan tinker` で未対応のお問い合わせを確認する（例：`Contact::where('status', '未対応')->get()`）
+- 作品を追加したら、WorkSeeder に書き足して実行し、tinker で status を「対応済み」にする

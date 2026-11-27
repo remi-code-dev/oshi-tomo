@@ -37,6 +37,9 @@ erDiagram
     users |o--o{ reports : "通報する（reporter_id）"
     users |o--o{ reports : "通報される（reported_id）"
 
+    works ||--o{ official_infos : "公式情報"
+    users ||--o{ contacts : "お問い合わせする"
+
     users {
         bigint id PK
         varchar name
@@ -127,6 +130,27 @@ erDiagram
         bigint reported_id FK
         varchar reported_email
         text reason
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    official_infos {
+        bigint id PK
+        bigint work_id FK
+        varchar title
+        varchar url
+        date start_date
+        date end_date
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    contacts {
+        bigint id PK
+        bigint user_id FK
+        varchar work_name
+        text body
+        varchar status
         timestamp created_at
         timestamp updated_at
     }
